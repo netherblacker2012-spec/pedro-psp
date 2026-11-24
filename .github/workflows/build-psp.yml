@@ -1,0 +1,27 @@
+
+name: Build PSP EBOOT
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ main, master ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build PSP
+        run: |
+          docker pull pspdev/pspdev:latest
+          docker run --rm \
+            -v "$GITHUB_WORKSPACE:/source" \
+            -w /source \
+            pspdev/pspdev:latest \
+            bash -lc 'psp-pacman -Sy --noconfirm && psp-pacman -S --noconfirm sdl2 sdl2_image sdl2_mixer && make dist'
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Pedro-PSP
+          path: dist/
