@@ -19,7 +19,7 @@ jobs:
             -v "$GITHUB_WORKSPACE:/source" \
             -w /source \
             pspdev/pspdev:latest \
-            bash -lc 'psp-pacman -Sy --noconfirm && psp-pacman -S --noconfirm sdl2 sdl2_image sdl2_mixer && make dist'
+           bash -lc 'psp-gcc --version && make dist'
 
       - uses: actions/upload-artifact@v4
         with:
